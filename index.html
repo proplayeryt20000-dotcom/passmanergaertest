@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pass Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Pass Manager</h1>
+
+    <!-- Auth Section -->
+    <div id="auth-section">
+      <h2>Login</h2>
+      <input type="email" id="login-email" placeholder="Email" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+
+      <h3>or Sign Up</h3>
+      <input type="text" id="signup-username" placeholder="Username" />
+      <input type="email" id="signup-email" placeholder="Email" />
+      <input type="password" id="signup-password" placeholder="Password" />
+      <button onclick="signup()">Sign Up</button>
+    </div>
+
+    <!-- Vault Section -->
+    <div id="vault-section" style="display: none;">
+      <h2>My Passwords</h2>
+
+      <button onclick="logout()">Logout</button>
+
+      <div class="add-form">
+        <input type="text" id="vault-name" placeholder="Account Name" />
+        <input type="text" id="vault-email" placeholder="Email (optional)" />
+        <input type="text" id="vault-password" placeholder="Password" />
+        <input type="text" id="vault-category" placeholder="Category (optional)" />
+        <button onclick="addPassword()">+ Add</button>
+      </div>
+
+      <div id="password-list"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
