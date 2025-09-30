@@ -2,50 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pass Manager</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Pass Manager</h1>
+    <h1>🔐 Pass Manager</h1>
 
-    <!-- Signup/Login Forms -->
+    <!-- Auth Section -->
     <div id="auth-section">
-      <div id="signup-form" class="form">
-        <h2>Sign Up</h2>
-        <input type="text" id="signup-username" placeholder="Username" required />
-        <input type="email" id="signup-email" placeholder="Email" required />
-        <input type="password" id="signup-password" placeholder="Password" required />
-        <button id="signup-btn">Sign Up</button>
-        <p>
-          Already have an account? <a href="#" id="show-login">Log in</a>
-        </p>
-      </div>
+      <h2>Login</h2>
+      <input type="email" id="login-email" placeholder="Email" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <button onclick="login()">Login</button>
 
-      <div id="login-form" class="form hidden">
-        <h2>Log In</h2>
-        <input type="email" id="login-email" placeholder="Email" required />
-        <input type="password" id="login-password" placeholder="Password" required />
-        <button id="login-btn">Log In</button>
-        <p>
-          Don't have an account? <a href="#" id="show-signup">Sign up</a>
-        </p>
-      </div>
+      <h3>or Sign Up</h3>
+      <input type="text" id="signup-username" placeholder="Username" />
+      <input type="email" id="signup-email" placeholder="Email" />
+      <input type="password" id="signup-password" placeholder="Password" />
+      <button onclick="signup()">Sign Up</button>
     </div>
 
-    <!-- Password Manager Section -->
-    <div id="manager-section" class="hidden">
-      <button id="logout-btn">Log Out</button>
-      <h2>Your Passwords</h2>
+    <!-- Vault Section -->
+    <div id="vault-section" style="display: none;">
+      <h2>My Passwords</h2>
 
-      <form id="add-password-form">
-        <input type="text" id="password-name" placeholder="Password Name" required />
-        <input type="email" id="password-email" placeholder="Email (optional)" />
-        <input type="text" id="password-password" placeholder="Password" required />
-        <input type="text" id="password-category" placeholder="Category (e.g. Computer)" />
-        <button type="submit">Add Password</button>
-      </form>
+      <button onclick="logout()">Logout</button>
+
+      <div class="add-form">
+        <input type="text" id="vault-name" placeholder="Account Name" />
+        <input type="text" id="vault-email" placeholder="Email (optional)" />
+        <input type="text" id="vault-password" placeholder="Password" />
+        <input type="text" id="vault-category" placeholder="Category (optional)" />
+        <button onclick="addPassword()">+ Add</button>
+      </div>
 
       <div id="password-list"></div>
     </div>
