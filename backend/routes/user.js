@@ -1,41 +1,57 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    minlength: 3,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+const router = express.Router();
 
-// Hash password before saving
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+// Signup Route
+router.post('/signup', async (req, res) => {
+  const { username, email, password } = req.body;
 
   try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
+    // Check if user exists
+    let user = await User.findOne({ email });
+    if (user) return res.status(400).json({ message: 'User already exists' });
+
+    // Create new user
+    user = new User({ username, email, password });
+    await user.save();
+
+    // Create JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    res.status(201).json({ token, username: user.username, email: user.email });
   } catch (err) {
-    next(err);
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Method to compare password during login
-userSchema.methods.comparePassword = async function (candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
+// Login Route
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
 
-module.exports = mongoose.model('User', userSchema);
+  try {
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+
+    // Check password
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+
+    // Create JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    res.json({ token, username: user.username, email: user.email });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+module.exports = router;
